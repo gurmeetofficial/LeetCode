@@ -16,7 +16,6 @@ class Solution {
                 StringBuilder sb=new StringBuilder(s);
                 s=s+sb.reverse().deleteCharAt(0);
                 int temp = Integer.parseInt(s);
-                // System.out.println(s);
                 if(temp>=n && checkPrime(temp)) return temp;
             }
         }
