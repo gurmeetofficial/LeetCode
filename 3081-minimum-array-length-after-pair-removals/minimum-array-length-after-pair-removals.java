@@ -1,16 +1,13 @@
 class Solution {
     public int minLengthAfterRemovals(List<Integer> nums) {
-        int i=0,n=nums.size(),j=n/2;
-        int res=0;
-        while(i<n/2 && j<n) {
+        int n=nums.size(),i=0,j=n/2;
+        while(i<n/2&&j<n) {
             if(nums.get(i)<nums.get(j)) {
-                i++;
-                j++;
-                res++;
+                i++;j++;
             } else {
                 j++;
             }
         }
-        return n-(res*2);
+        return n-2*i;
     }
 }
