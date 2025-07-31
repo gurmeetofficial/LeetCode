@@ -1,39 +1,31 @@
 class Solution {
-    // dp[index][canBuy][transactionsLeft]
-    private int[][][] dp;
-
-    private int maxProfitRec(int[] prices, int index, int canBuy, int transactionsLeft) {
-        if (index >= prices.length || transactionsLeft == 0) {
+    int[][][] dp;
+    public int maxProfitRec(int[] prices, int curIndex, int canBuy, int transactionsLeft) {
+        if (transactionsLeft<1 || curIndex>=prices.length) {
             return 0;
         }
 
-        // If we've already computed this state, return the stored result
-        if (dp[index][canBuy][transactionsLeft] != -1) {
-            return dp[index][canBuy][transactionsLeft];
+        if (dp[curIndex][canBuy][transactionsLeft]>-1) {
+            return dp[curIndex][canBuy][transactionsLeft];
         }
-
-        int result;
-        if (canBuy == 1) { // If we can buy
-            int buyProfit = -prices[index] + maxProfitRec(prices, index + 1, 0, transactionsLeft);
-            int skipProfit = maxProfitRec(prices, index + 1, 1, transactionsLeft);
-            result = Math.max(buyProfit, skipProfit);
-        } else { // If we must sell
-            int sellProfit = prices[index] + maxProfitRec(prices, index + 1, 1, transactionsLeft - 1);
-            int skipProfit = maxProfitRec(prices, index + 1, 0, transactionsLeft);
-            result = Math.max(sellProfit, skipProfit);
+        int profit = 0;
+        if(canBuy == 1) {
+            int buyProfit = -prices[curIndex]+maxProfitRec(prices, curIndex+1, 0,  transactionsLeft);
+            int skipProfit = maxProfitRec(prices, curIndex+1, 1,  transactionsLeft);
+            profit = Math.max(buyProfit, skipProfit);
+        } else {
+            int sellProfit = prices[curIndex]+maxProfitRec(prices, curIndex+1, 1,  transactionsLeft-1);
+            int skipProfit = maxProfitRec(prices, curIndex+1, 0,  transactionsLeft);
+            profit = Math.max(sellProfit, skipProfit);
         }
-
-        // Store the result before returning
-        dp[index][canBuy][transactionsLeft] = result;
-        return result;
+        dp[curIndex][canBuy][transactionsLeft] = profit;
+        return profit;
     }
-
     public int maxProfit(int[] prices) {
-        int n = prices.length;
-        // Initialize DP table with -1 (uncomputed)
-        dp = new int[n][2][3]; // index, canBuy (0/1), transactionsLeft (0/1/2)
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 2; j++) {
+        int len = prices.length;
+        dp = new int[len][2][3];
+        for(int i=0;i<len;i++) {
+            for(int j=0;j<2;j++) {
                 Arrays.fill(dp[i][j], -1);
             }
         }
