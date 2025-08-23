@@ -1,18 +1,30 @@
 class Solution {
     public List<Integer> majorityElement(int[] nums) {
-        int len = nums.length;
-        List<Integer> res = new ArrayList<>();
-        HashMap<Integer, Integer> map = new HashMap<>();
+        int countA=0,countB=0, len=nums.length;
+        Integer candidateA=null,candidateB=null;
         for(int i=0;i<len;i++) {
-            map.put(nums[i], map.getOrDefault(nums[i], 0)+1);
-        }
-        int itr;
-        for(int key:map.keySet()) {
-            itr = map.get(key);
-            if(itr>len/3) {
-                res.add(key);
+            if (candidateA !=null && nums[i]==candidateA) countA++;
+            else if (candidateB !=null && nums[i]==candidateB) countB++;
+            else if (countA==0) {
+                candidateA=nums[i];
+                countA++;
+            }
+            else if (countB==0) {
+                candidateB=nums[i];
+                countB++;
+            } 
+            else {
+                countA--;countB--;
             }
         }
+        countA=0;countB=0;
+        for(int i=0;i<len;i++) {
+            if(nums[i]==candidateA) countA++;
+            else if(candidateB!=null && nums[i]==candidateB) countB++;
+        }
+        List<Integer>res = new ArrayList<>();
+        if (countA>len/3) res.add(candidateA);
+        if (countB>len/3 && candidateA != candidateB) res.add(candidateB);
         return res;
     }
 }
