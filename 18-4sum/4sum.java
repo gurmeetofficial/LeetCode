@@ -3,11 +3,12 @@ class Solution {
         Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
         int len = nums.length;
-        if(target==-294967296 || target==294967296) return res;
-        if(nums==null || nums.length<3) {
+        if(nums==null || nums.length<4) {
             return res;
         }
         for(int i=0;i<len-3;i++) {
+            if((long)nums[i]+nums[i+1]+nums[i+2]+nums[i+3]>target) break;
+            if((long)nums[i]+nums[len-1]+nums[len-2]+nums[len-3]<target) continue;
             for(int j=i+1;j<len-2;j++) {
                 int left = j+1, right=len-1;
                 long restTarget = (long)target-nums[i]-nums[j];
